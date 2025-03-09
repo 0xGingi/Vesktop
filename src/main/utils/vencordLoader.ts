@@ -44,7 +44,12 @@ export async function githubGet(endpoint: string) {
 }
 
 export async function downloadVencordFiles() {
-    const release = await githubGet("/repos/Vendicated/Vencord/releases/latest");
+    mkdirSync(VENCORD_FILES_DIR, { recursive: true });
+
+    const release = await fetchie(`${API_BASE}/repos/0xGingi/Vencord/releases/tags/build`, {
+        headers: { Accept: "application/vnd.github+json", "User-Agent": USER_AGENT },
+        timeout: 20000
+    });
 
     const { assets }: ReleaseData = await release.json();
 
